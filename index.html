@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <style type="text/css">
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            box-sizing: border-box;
+            border: 2px solid #e6cbe9;
+            border-radius: 4px;
+            font-size: 16px;
+            font-family: 'Times New Roman', Times, serif;
+            background-color: #DED9E2;
+        }
+
+        body {
+            background-color: #F7F4EA;
+        }
+    </Style>
+</head>
+
+<body>
+    <div id="main">
+        <h3>
+            Hola aplicacion : {{name_app}}
+        </h3>
+
+        <button @click="contador++">
+            Click me : {{ contador }}
+        </button>
+
+        <hr>
+        <form>
+            <fieldset>
+                <label>
+                    Nombre :
+                </label>
+                <input type="text" v-model="username" placeholder="Ingresa tu nombre" name="">
+            </fieldset>
+
+            <label>
+                ¡Hola! <span> {{ username}} </span>, un placer
+            </label>
+        </form>
+
+    <h3>
+        Calculadora
+    </h3>
+
+    <input type="number" v-model="num1" placeholder="Primer número">
+    <input type="number" v-model="num2" placeholder="Segundo número">
+
+    <button v-on:click="sumar"> sumar </button>
+    <h3> Resultado: {{ result }} </h3>
+</div>
+
+    <script>
+        const { createApp, ref } = Vue
+
+        createApp({
+            setup() {
+                const name_app = ref('Mi primer app')
+                const contador = ref(0)
+                const username = ref('')
+
+                const num1 = ref(0)
+                const num2 = ref(0)
+                const result = ref(0)
+
+                const sumar = () => {
+                    result.value = Number(num1.value) + Number(num2.value)
+                }
+
+                return {
+                    name_app,
+                    contador,
+                    username,
+                    num1,
+                    num2,
+                    result,
+                    sumar
+                }
+            }
+        }).mount('#main')
+    </script>
+</body>
+
+</html>
