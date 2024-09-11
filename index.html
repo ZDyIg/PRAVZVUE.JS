@@ -27,66 +27,76 @@
 
 <body>
     <div id="main">
-        <h3>
-            Hola aplicacion : {{name_app}}
-        </h3>
-
-        <button @click="contador++">
-            Click me : {{ contador }}
-        </button>
-
-        <hr>
-        <form>
-            <fieldset>
-                <label>
-                    Nombre :
-                </label>
-                <input type="text" v-model="username" placeholder="Ingresa tu nombre" name="">
-            </fieldset>
-
+        <ul>
+            <li v-for="user in users">
+                {{ user.name}} - {{ user.rol }}
+            </li>
+        </ul>
+    <form>
+        <fieldset>
             <label>
-                ¡Hola! <span> {{ username}} </span>, un placer
+                Nombre:
             </label>
-        </form>
 
-    <h3>
-        Calculadora
-    </h3>
+            <input type="" v-model="name" name="">
+        </fieldset>
+        <br>
 
-    <input type="number" v-model="num1" placeholder="Primer número">
-    <input type="number" v-model="num2" placeholder="Segundo número">
+        <fieldset>
+            <label>
+                Rol:
+            </label>
+            <input type="" v-model="rol" rol="">
+        </fieldset>
+        <button type="button" v-on:click="addUser">
+            Agregar
+        </button>
+    </form>
+    </div>
 
-    <button v-on:click="sumar"> sumar </button>
-    <h3> Resultado: {{ result }} </h3>
-</div>
+
 
     <script>
         const { createApp, ref } = Vue
 
         createApp({
             setup() {
-                const name_app = ref('Mi primer app')
-                const contador = ref(0)
-                const username = ref('')
-
-                const num1 = ref(0)
-                const num2 = ref(0)
-                const result = ref(0)
-
-                const sumar = () => {
-                    result.value = Number(num1.value) + Number(num2.value)
-                }
+                const name = ref('');
+                const rol = ref('');
+                const message = ref('hello vue')
+                let users = ref([
+                    {
+                        "name": "Julian",
+                        "rol": "Backend",
+                    },
+                    {
+                        "name": "Mclovin",
+                        "rol": "FullStack"
+                    }
+                ]);
 
                 return {
-                    name_app,
-                    contador,
-                    username,
-                    num1,
-                    num2,
-                    result,
-                    sumar
+                    message,
+                    users,
+                    name,
+                    rol
                 }
-            }
+            },
+            methods: {
+                addUser() {
+                    let momt = {
+                        "name": this.name,
+                        "rol": this.rol
+                    }
+
+                    this.users.push(momt)
+                    console.log(momt);
+
+                    this.name = ''
+                    this.rol = ''
+                }
+
+            },
         }).mount('#main')
     </script>
 </body>
