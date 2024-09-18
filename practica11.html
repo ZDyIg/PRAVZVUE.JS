@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <style type="text/css">
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            box-sizing: border-box;
+            border: 2px solid #e6cbe9;
+            border-radius: 4px;
+            font-size: 16px;
+            font-family: 'Times New Roman', Times, serif;
+            background-color: #DED9E2;
+        }
+
+        body {
+            background-color: #F7F4EA;
+        }
+    </Style>
+</head>
+
+<body>
+    <div id="main">
+        <form @submit.prevent="login" v-if="!isValid">
+            <fieldset>
+                <label>
+                    Email:
+                </label>
+                <input type="email" v-model="email">
+            </fieldset>
+            <br>
+
+            <fieldset>
+                <label>
+                    Password:
+                </label>
+                <input type="password" v-model="password">
+            </fieldset>
+            <button type="submit">
+                Enviar
+            </button>
+        </form>
+
+        <h1 v-if="isValid">
+            Bienvenido Usuario
+        </h1>
+    </div>
+
+
+    <script>
+        const { createApp, ref } = Vue
+        createApp({
+            data() {
+                const email = ref('');
+                const password = ref('');
+                const isValid = ref(false);
+                return {
+                    email,
+                    password,
+                    isValid
+                }
+            },
+            methods: {
+                login() {
+                    console.log(this.email),
+                    console.log(this.password)
+
+                    fetch('users.json')
+                        .then(response => response.json())
+                        .then(users => {
+                            users.forEach(user => {
+                                if (user.email === this.email && user.password === this.password) {
+                                    this.isValid = ref(true);
+                                    console.log(this.isValid)
+                                }
+                            });
+                        });
+
+                }
+            }
+        }).mount('#main')
+    </script>
+
+
+</body>
+
+</html>
