@@ -23,6 +23,31 @@
         body {
             background-color: #F7F4EA;
         }
+
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+
+        table{
+            width: 100%;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: center;
+        }
+
+        th{
+            background-color: #e6cbe9;
+            color: black;
+        }
+
+        tr:nth-child(even) {
+            background-color: #DED9E2;
+        }
     </Style>
 </head>
 
@@ -48,23 +73,48 @@
             </button>
         </form>
 
-        <h1 v-if="isValid">
-            Bienvenido Usuario
-        </h1>
+        <div v-if="isValid">
+            <h1> Bienvenido Usuario </h1>
+            <h2>Lista de usuarios</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Web Side</th>
+                        <th>Company</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr v-for="user in users"  :key="user.id">
+                        <td>{{ user.id }}</td>
+                        <td>{{ user.name }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>{{ user.website }}</td>
+                        <td>{{ user.company.name }}</td>
+                    </tr>
+                </tbody>
+            </table>
+    
+        </div>  
     </div>
 
 
     <script>
-        const { createApp, ref } = Vue
+        const { createApp, ref} = Vue
         createApp({
             data() {
                 const email = ref('');
                 const password = ref('');
                 const isValid = ref(false);
+                const users = ref([]);
                 return {
                     email,
                     password,
-                    isValid
+                    isValid, 
+                    users
                 }
             },
             methods: {
@@ -75,6 +125,7 @@
                     fetch('users.json')
                         .then(response => response.json())
                         .then(users => {
+                            this.users = users;
                             users.forEach(user => {
                                 if (user.email === this.email && user.password === this.password) {
                                     this.isValid = ref(true);
@@ -83,8 +134,15 @@
                             });
                         });
 
+                },               
+            },
+            mounted() { 
+                    fetch('users.json')
+                    .then(response => response.json())
+                    .then(users => {
+                        this.users = users
+                    });
                 }
-            }
         }).mount('#main')
     </script>
 

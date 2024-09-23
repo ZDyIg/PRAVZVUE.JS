@@ -51,6 +51,7 @@
         "id": 3,
         "name": "Clementine Bauch",
         "username": "Samantha",
+        "password": "12345",
         "email": "Nathan@yesenia.net",
         "address": {
             "street": "Douglas Extension",
@@ -74,6 +75,7 @@
         "id": 4,
         "name": "Patricia Lebsack",
         "username": "Karianne",
+        "password": "123456",
         "email": "Julianne.OConner@kory.org",
         "address": {
             "street": "Hoeger Mall",
@@ -97,6 +99,7 @@
         "id": 5,
         "name": "Chelsey Dietrich",
         "username": "Kamren",
+        "password": "1234567",
         "email": "Lucio_Hettinger@annie.ca",
         "address": {
             "street": "Skiles Walks",
@@ -120,6 +123,7 @@
         "id": 6,
         "name": "Mrs. Dennis Schulist",
         "username": "Leopoldo_Corkery",
+        "password": "12345678",
         "email": "Karley_Dach@jasper.info",
         "address": {
             "street": "Norberto Crossing",
@@ -143,6 +147,7 @@
         "id": 7,
         "name": "Kurtis Weissnat",
         "username": "Elwyn.Skiles",
+        "password": "123456789",
         "email": "Telly.Hoeger@billy.biz",
         "address": {
             "street": "Rex Trail",
@@ -166,6 +171,7 @@
         "id": 8,
         "name": "Nicholas Runolfsdottir V",
         "username": "Maxime_Nienow",
+        "password": "1234567890",
         "email": "Sherwood@rosamond.me",
         "address": {
             "street": "Ellsworth Summit",
@@ -189,6 +195,7 @@
         "id": 9,
         "name": "Glenna Reichert",
         "username": "Delphine",
+        "password": "12345678901",
         "email": "Chaim_McDermott@dana.io",
         "address": {
             "street": "Dayna Park",
@@ -212,6 +219,7 @@
         "id": 10,
         "name": "Clementina DuBuque",
         "username": "Moriah.Stanton",
+        "password": "123456789012",
         "email": "Rey.Padberg@karina.biz",
         "address": {
             "street": "Kattie Turnpike",
