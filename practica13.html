@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <style type="text/css">
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            box-sizing: border-box;
+            border: 2px solid #e6cbe9;
+            border-radius: 4px;
+            font-size: 16px;
+            font-family: 'Times New Roman', Times, serif;
+            background-color: #DED9E2;
+        }
+
+        body {
+            background-color: #F7F4EA;
+        }
+
+        table,
+        th,
+        td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+
+        table {
+            width: 100%;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        th,
+        td {
+            padding: 15px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #e6cbe9;
+            color: black;
+        }
+
+        tr:nth-child(even) {
+            background-color: #DED9E2;
+        }
+
+        .button-spacing {
+            margin-right: 10px;
+        }
+    </Style>
+</head>
+
+<body>
+    <div id="main">
+        <form @submit.prevent="login" v-if="!isValid">
+            <fieldset>
+                <label>
+                    Email:
+                </label>
+                <input type="email" v-model="email">
+            </fieldset>
+            <br>
+
+            <fieldset>
+                <label>
+                    Password:
+                </label>
+                <input type="password" v-model="password">
+            </fieldset>
+            <button type="submit">
+                Enviar
+            </button>
+        </form>
+
+        <div v-if="isValid">
+            <h1> Bienvenido Usuario </h1>
+            <h2>Lista de usuarios</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Web Side</th>
+                        <th>Company</th>
+                        <th>Action</th>
+
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr v-for="user in users" :key="user.id">
+                        <td>{{ user.id }}</td>
+                        <td>{{ user.name }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>{{ user.website }}</td>
+                        <td>{{ user.company.name }}</td>
+                        <td>
+                            <button @click="deleteUser(user.id)" class="button-spacing">
+                                Delete
+                            </button>
+
+                            <button @click="editUser(user.id)" class="button-spacing">
+                                Edit
+                            </button>
+                        </td>
+
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+
+    <script>
+        const { createApp, ref } = Vue
+        createApp({
+            data() {
+                const email = ref('');
+                const password = ref('');
+                const isValid = ref(false);
+                const users = ref([]);
+                return {
+                    email,
+                    password,
+                    isValid,
+                    users
+                }
+            },
+            methods: {
+                login() {
+                    console.log(this.email),
+                        console.log(this.password)
+
+                    fetch('users.json')
+                        .then(response => response.json())
+                        .then(users => {
+                            this.users = users;
+                            users.forEach(user => {
+                                if (user.email === this.email && user.password === this.password) {
+                                    this.isValid = ref(true);
+                                    console.log(this.isValid)
+                                }
+                            });
+                        });
+
+                },
+                deleteUser(id) {
+                    fetch(`users/${id}`, {
+                        method: 'DELETE'
+                    })
+                        .then(() => {
+                            this.users = this.users.filter(user => user.id !== id);
+                        })
+                },
+            },
+            mounted() {
+                fetch('users.json')
+                    .then(response => response.json())
+                    .then(users => {
+                        this.users = users
+                    });
+            }
+        }).mount('#main')
+    </script>
+
+
+</body>
+
+</html>
