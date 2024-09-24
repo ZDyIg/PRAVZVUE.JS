@@ -139,7 +139,7 @@
             methods: {
                 login() {
                     console.log(this.email),
-                        console.log(this.password)
+                    console.log(this.password)
 
                     fetch('users.json')
                         .then(response => response.json())
@@ -148,6 +148,7 @@
                             users.forEach(user => {
                                 if (user.email === this.email && user.password === this.password) {
                                     this.isValid = ref(true);
+                                    localStorage.setItem('isValid', this.isValid);
                                     console.log(this.isValid)
                                 }
                             });
@@ -169,11 +170,12 @@
                     .then(users => {
                         this.users = users
                     });
+                if (localStorage.getItem('isValid')) {
+                    this.isValid = ref(true);
+                }
             }
         }).mount('#main')
     </script>
-
-
 </body>
 
 </html>
