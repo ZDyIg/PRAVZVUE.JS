@@ -5,9 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-    <style type="text/css">
+    <style>
         input {
             width: 100%;
             padding: 10px;
@@ -55,29 +54,22 @@
         .button-spacing {
             margin-right: 10px;
         }
-    </Style>
+    </style>
 </head>
 
 <body>
     <div id="main">
         <form @submit.prevent="login" v-if="!isValid">
             <fieldset>
-                <label>
-                    Email:
-                </label>
+                <label>Email:</label>
                 <input type="email" v-model="email">
             </fieldset>
             <br>
-
             <fieldset>
-                <label>
-                    Password:
-                </label>
+                <label>Password:</label>
                 <input type="password" v-model="password">
             </fieldset>
-            <button type="submit">
-                Enviar
-            </button>
+            <button type="submit">Enviar</button>
         </form>
 
         <div v-if="isValid">
@@ -89,70 +81,100 @@
                         <th>ID</th>
                         <th>Name</th>
                         <th>Email</th>
-                        <th>Web Side</th>
+                        <th>Web Site</th>
                         <th>Company</th>
                         <th>Action</th>
-
                     </tr>
                 </thead>
-
                 <tbody>
                     <tr v-for="user in users" :key="user.id">
                         <td>{{ user.id }}</td>
                         <td>{{ user.name }}</td>
                         <td>{{ user.email }}</td>
                         <td>{{ user.website }}</td>
-                        <td>{{ user.company.name }}</td>
+                        <td>{{ user.company?.name }}</td>
                         <td>
-                            <button @click="deleteUser(user.id)" class="button-spacing">
-                                Delete
-                            </button>
-
-                            <button @click="editUser(user.id)" class="button-spacing">
-                                Edit
-                            </button>
+                            <button @click="deleteUser(user.id)" class="button-spacing">Delete</button>
+                            <button @click="editDataUser(user)" class="button-spacing">Edit</button>
                         </td>
-
                     </tr>
                 </tbody>
             </table>
 
+            <div v-if="editUser">
+                <h2>Edit User</h2>
+                <form @submit.prevent="updateUser">
+                    <fieldset>
+                        <label>Name:</label>
+                        <input type="text" v-model="editUser.name">
+                    </fieldset>
+                    <br>
+                    <fieldset>
+                        <label>Email:</label>
+                        <input type="text" v-model="editUser.email">
+                    </fieldset>
+                    <br>
+                    <fieldset>
+                        <label>Web Site:</label>
+                        <input type="text" v-model="editUser.website">
+                    </fieldset>
+                    <br>
+                    <fieldset>
+                        <label>Company:</label>
+                        <input type="text" v-model="editUser.company.name">
+                    </fieldset>
+                    <br>
+                    <button type="submit">Save</button>
+                </form>
+            </div>
         </div>
     </div>
 
-
     <script>
-        const { createApp, ref } = Vue
+        const { createApp, ref } = Vue;
         createApp({
             data() {
                 const email = ref('');
                 const password = ref('');
                 const isValid = ref(false);
                 const users = ref([]);
+                const editUser = ref(null);
                 return {
                     email,
                     password,
                     isValid,
-                    users
-                }
+                    users,
+                    editUser
+                };
             },
             methods: {
                 login() {
-                    console.log(this.email),
-                    console.log(this.password)
-
+                    console.log(this.email);
+                    console.log(this.password);
                     fetch('users.json')
                         .then(response => response.json())
                         .then(users => {
                             this.users = users;
                             users.forEach(user => {
                                 if (user.email === this.email && user.password === this.password) {
-                                    this.isValid = ref(true);
+                                    this.isValid = true;
                                     localStorage.setItem('isValid', this.isValid);
-                                    console.log(this.isValid)
+                                    console.log(this.isValid);
                                 }
                             });
                         });
+                },
+
+                editDataUser(user) {
+                    this.editUser = { ...user };
+                },
+
+                updateUser() {
+                    const userIndex = this.users.findIndex(u => u.id === this.editUser.id);
+                    if (userIndex !== -1) {
+                        this.users[userIndex] = { ...this.editUser };
+                        this.editUser = null;
+                    }
 
                 },
                 deleteUser(id) {
@@ -161,20 +183,20 @@
                     })
                         .then(() => {
                             this.users = this.users.filter(user => user.id !== id);
-                        })
+                        });
                 },
-            },
-            mounted() {
-                fetch('users.json')
-                    .then(response => response.json())
-                    .then(users => {
-                        this.users = users
-                    });
-                if (localStorage.getItem('isValid')) {
-                    this.isValid = ref(true);
+                mounted() {
+                    fetch('users.json')
+                        .then(response => response.json())
+                        .then(users => {
+                            this.users = users
+                        });
+                    if (localStorage.getItem('isValid')) {
+                        this.isValid = ref(true);
+                    }
                 }
-            }
-        }).mount('#main')
+            },
+        }).mount('#main');
     </script>
 </body>
 
