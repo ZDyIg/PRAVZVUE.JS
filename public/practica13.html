@@ -75,7 +75,8 @@
         <div v-if="isValid">
             <h1> Bienvenido Usuario </h1>
             <h2>Lista de usuarios</h2>
-            <table>
+            <button @click="showAddUserForm = true">Add User</button>
+            <table v-if="!showAddUserForm && !editUser">
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -101,7 +102,33 @@
                 </tbody>
             </table>
 
-            <div v-if="editUser">
+            <div v-if="showAddUserForm">
+                <h2>Add User</h2>
+                <form @submit.prevent="addNewUser">
+                    <fieldset>
+                        <label>Name:</label>
+                        <input type="text" v-model="newUser.name">
+                    </fieldset>
+                    <br>
+                    <fieldset>
+                        <label>Email:</label>
+                        <input type="text" v-model="newUser.email">
+                    </fieldset>
+                    <br>
+                    <fieldset>
+                        <label>Web Site:</label>
+                        <input type="text" v-model="newUser.website">
+                    </fieldset>
+                    <br>
+                    <fieldset>
+                        <label>Company:</label>
+                        <input type="text" v-model="newUser.company.name">
+                    </fieldset> <br>
+                    <button type="submit">Add</button>
+                </form>
+            </div>
+
+            < <div v-if="editUser">
                 <h2>Edit User</h2>
                 <form @submit.prevent="updateUser">
                     <fieldset>
@@ -126,8 +153,8 @@
                     <br>
                     <button type="submit">Save</button>
                 </form>
-            </div>
         </div>
+    </div>
     </div>
 
     <script>
@@ -139,12 +166,23 @@
                 const isValid = ref(false);
                 const users = ref([]);
                 const editUser = ref(null);
+                const showAddUserForm = ref(false);
+                const newUser = ref({
+                    name: '',
+                    email: '',
+                    website: '',
+                    company: {
+                        name: ''
+                    }
+                })
                 return {
                     email,
                     password,
                     isValid,
                     users,
-                    editUser
+                    editUser,
+                    showAddUserForm,
+                    newUser
                 };
             },
             methods: {
@@ -163,6 +201,25 @@
                                 }
                             });
                         });
+                },
+
+                addNewUser() {
+                    // this.newUser.id = this.user.length + 1;
+                    // this.users.push({ ...this.newUser });
+                    // this.newUser = { id: '', name: '', email: '', website: '', company: { name: '' } };
+                    // this.showAddUserForm = false;
+
+                    if (this.users && Array.isArray(this.users)) {
+                        const newId = this.users.length > 0 ? Math.max(...this.users.map(user => user.id)) + 1 : 1;
+                        this.newUser.id = newId;
+                        this.users.push({ ...this.newUser });
+                        this.newUser = { name: '', email: '', website: '', company: { name: '' } };
+                        this.showAddUserForm = false;
+                    } else {
+                        console.error('users no está definido o no es un array');
+                    }
+
+
                 },
 
                 editDataUser(user) {
