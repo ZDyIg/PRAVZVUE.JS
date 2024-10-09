@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="container">
+        <form class="form">
+            <h1>Formulario de acceso</h1>
+            <fieldset>
+                <label>Email:</label>
+                <input type="email" v-model="email">
+            </fieldset>
+            <br>
+            <fieldset>
+                <label>Password:</label>
+                <input type="password" v-model="password">
+            </fieldset>
+            <button class="button" type="submit">Acceder</button>
+        </form>
+
+        <div class="checkbox-group">
+            <input type="checkbox" id="checkbox1" class="custom-checkbox">
+            <label for="checkbox1" class="checkbox-label">Admministrador</label><br />
+
+            <input type="checkbox" id="checkbox2" class="custom-checkbox">
+            <label for="checkbox2" class="checkbox-label">Gerente</label><br />
+
+            <input type="checkbox" id="checkbox3" class="custom-checkbox">
+            <label for="checkbox3" class="checkbox-label">Propietario</label><br />
+
+            <input type="checkbox" id="checkbox4" class="custom-checkbox">
+            <label for="checkbox4" class="checkbox-label">Agente de ventas</label><br />
+
+            <input type="checkbox" id="checkbox5" class="custom-checkbox">
+            <label for="checkbox5" class="checkbox-label">Prospecto</label><br />
+        </div>
+
+        <script>
+            const checkboxes = document.querySelectorAll('.custom-checkbox');
+
+            checkboxes.forEach((checkbox) => {
+                checkbox.addEventListener('change', () => {
+                    if (checkbox.checked) {
+                        checkboxes.forEach((otherCheckbox) => {
+                            if (otherCheckbox !== checkbox) {
+                                otherCheckbox.checked = false;
+                            }
+                        });
+                    }
+                });
+            });
+        </script>
+
+        <a class="link" href=""> ¿Olvidaste tu contraseña? </a>
+    </div>
+
+</body>
+
+</html>
