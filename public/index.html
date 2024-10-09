@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <style type="text/css">
+        body {
+            height: 100%;
+            margin: auto;
+            font-family: consolas, monospace;
+        }
+
+        #main {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #708B75;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px #444b6e8a;
+            text-align: center;
+        }
+
+        fieldset {
+            border: none;
+            margin: 10px 0;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input {
+            width: auto;
+            margin: auto;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            display: block;
+        }
+
+        button {
+            margin: 10px auto;
+            padding: 10px;
+            background-color: #7fa376;
+            color: rgb(255, 255, 255);
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            display: block;
+            width: auto;
+        }
+
+        button:hover {
+            background-color: #3d5334;
+        }
+    </Style>
+</head>
+
+<body>
+    <div id="main">
+        <form @submit.prevent="login" v-if="!isValid">
+            <fieldset>
+                <label>Email:</label>
+                <input type="email" v-model="email">
+            </fieldset>
+            <br>
+            <fieldset>
+                <label>Password:</label>
+                <input type="password" v-model="password">
+            </fieldset>
+            <button type="submit">Enviar</button>
+        </form>
+    </div>
+    <script>
+        const { createApp, ref } = Vue;
+        createApp({
+            data() {
+                return {
+                    email: '',
+                    password: '',
+                    isValid: ref(false)
+                }
+            },
+            methods: {
+                login() {
+                    console.log(this.email)
+                    console.log(this.password)
+                    // fetch('users.json')
+                    //     .then(response => response.json())
+                    //     .then(users => {
+                    //         this.users = users;
+                    //         users.forEach(user => {
+                    //             if (user.email === this.email && user.password === this.password) {
+                    //                 this.isValid = ref(true);
+                    //                 console.log(this.isValid)
+                    //             }
+                    //         })
+                    //     })
+                }
+            }
+        }).mount('#main')
+    </script>
+</body>
+
+</html>
