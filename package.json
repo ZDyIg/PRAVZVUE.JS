@@ -1,5 +1,9 @@
 {
   "dependencies": {
+    "@coreui/icons-pro": "^3.0.0",
+    "@coreui/vue": "^5.4.0",
+    "bootstrap": "^5.3.3",
+    "bootstrap-vue": "^2.23.1",
     "express": "^4.21.0"
   },
   "devDependencies": {

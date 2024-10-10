@@ -1,0 +1,1 @@
+{"version":3,"file":"cil-flag-rectangle.js","sources":["../../../src/linear/cil-flag-rectangle.ts"],"sourcesContent":["export var cilFlagRectangle = [\"512 512\", \"<path fill='var(--ci-primary-color, currentColor)' d='M80,16H48V496H80V360H464V56H80ZM432,88V328H80V88Z' class='ci-primary'/>\"];\n"],"names":[],"mappings":"AAAU,IAAC,gBAAgB,GAAG,CAAC,SAAS,EAAE,+HAA+H;;;;"}

@@ -1,0 +1,1 @@
+{"version":3,"file":"cis-circle.js","sources":["../../../src/solid/cis-circle.ts"],"sourcesContent":["export var cisCircle = [\"512 512\", \"<circle cx='256.6' cy='256.635' r='239.4' fill='var(--ci-primary-color, currentColor)' class='ci-primary'/>\"];\n"],"names":[],"mappings":";;AAAU,IAAC,SAAS,GAAG,CAAC,SAAS,EAAE,6GAA6G;;;;"}

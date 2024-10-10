@@ -1,16 +1,25 @@
+import { createApp } from "vue";
+import App from "./App.vue";
+import { createCoreUI } from "@coreui/vue";
+import "@coreui/icons-pro/dist/css/coreui-icons.min.css";
+
+const vueApp = createApp(App);
+vueApp.use(createCoreUI());
+vueApp.mount("#app");
+
 const express = require("express");
 const path = require("path");
 
-const app = express();
+const serverApp = express();
 const PORT = process.env.PORT || 3000;
 
 // Servir archivos estáticos desde la carpeta 'public'
-app.use(express.static(path.join(__dirname, "public")));
+serverApp.use(express.static(path.join(__dirname, "public")));
 
-app.get("/", (req, res) => {
+serverApp.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
-app.listen(PORT, () => {
+serverApp.listen(PORT, () => {
   console.log(`Servidor escuchando en http://localhost:${PORT}`);
 });

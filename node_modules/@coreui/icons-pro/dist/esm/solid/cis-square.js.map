@@ -1,0 +1,1 @@
+{"version":3,"file":"cis-square.js","sources":["../../../src/solid/cis-square.ts"],"sourcesContent":["export var cisSquare = [\"512 512\", \"<rect width='448' height='448' x='32' y='32' fill='var(--ci-primary-color, currentColor)' class='ci-primary' rx='4'/>\"];\n"],"names":[],"mappings":"AAAU,IAAC,SAAS,GAAG,CAAC,SAAS,EAAE,uHAAuH;;;;"}

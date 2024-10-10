@@ -1,13 +1,192 @@
 <!DOCTYPE html>
 <html lang="en">
 
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <style type="text/css">
+        #main {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #c2ebca;
+            padding: 20px;
+        }
+
+        .card {
+            background-color: #A3B18A;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px #444b6e8a;
+            display: flex;
+            flex-direction: row;
+            align-items: flex-start;
+            width: 90%;
+            max-width: 500px;
+            margin: 10px auto;
+        }
+
+        .card img {
+            width: 120px;
+            height: auto;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-right: 20px;
+        }
+
+        .card-content {
+            flex: 1;
+        }
+
+        .card-content h2 {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+
+        input[type="range"] {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            width: 100%;
+            height: 8px;
+            background: #ddd;
+            border-radius: 5px;
+            outline: none;
+            opacity: 0.7;
+            transition: opacity .2s;
+        }
+
+        input[type="range"]:hover {
+            opacity: 1;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #fdff8b;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background: #ecf691;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        input[type="range"]::-ms-thumb {
+            width: 20px;
+            height: 20px;
+            background: #e9d767;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+    </style>
 </head>
 
 <body>
+    <div id="main" class="details">
+
+        <div class="card" v-if="movie.id">
+            <img :src="'https://www.themoviedb.org/t/p/w600_and_h900_bestv2/' + movie.poster_path" alt="movie poster">
+            <div class="card-content">
+                <h2>{{ movie.title }}</h2>
+                <p><strong>Release Date:</strong></br> {{ movie.release_date }}</p>
+                <p>{{ movie.overview }}</p>
+
+                <div class="generes">
+                    <h3>Generes:</h3>
+                    <ul>
+                        <li v-for="genre in movie.genres">{{ genre.name }}</li>
+                    </ul>
+                </div>
+                <p><strong>Original Language:</strong> {{ movie.original_language }}</p>
+                <p><strong>Popularity:</strong> {{ movie.popularity }}</p>
+                <p><strong>Vote Average:</strong> {{ movie.vote_average }}</p>
+                <p><strong>Vote Count:</strong> {{ movie.vote_count }}</p>
+
+                <p><strong>Rate this movie:</strong></p>
+                <input type="range" v-model="rating" min="0" max="10" step="0.1" />
+                <p>Rating: {{ rating }}</p>
+
+
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        const { createApp, ref } = Vue;
+
+        createApp({
+            data() {
+                return {
+                    movieId: null,
+                    movie: {},
+                    rating: 0
+                }
+            },
+            methods: {
+                getDetails(movieId) {
+                    console.log(`Fetching details for movie ID: ${movieId}`);
+                    const url = `https://api.themoviedb.org/3/movie/${movieId}?api_key=e2f892788bdea42be5636a47bc7ffdd5`;
+                    console.log('API URL:', url);
+
+                    fetch(url)
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Error: ' + response.status + ' ' + response.statusText);
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            console.log(data);
+                            this.movie = data;
+                            this.loadRating();
+                        })
+                        .catch(error => {
+                            console.log("Error: " + error);
+                        });
+                },
+
+                getMovieIdFromUrl() {
+                    const urlParams = new URLSearchParams(window.location.search);
+                    return urlParams.get('id');
+                },
+            },
+
+            saveRating() {
+                localStorage.setItem(`rating_${this.movieId}`, this.rating);
+            },
+
+            loadRating() {
+                const storedRating = localStorage.getItem(`rating_${this.movieId}`);
+                if (storedRating !== null) {
+                    this.rating = parseFloat(storedRating);
+                }
+            },
+
+            mounted() {
+                this.movieId = this.getMovieIdFromUrl();
+                console.log('Movie ID from URL:', this.movieId);
+                if (this.movieId) {
+                    this.getDetails(this.movieId);
+                } else {
+                    console.log('No movie ID provided');
+                }
+            }
+        }).mount('#main')
+    </script>
+
+
 
 </body>
 

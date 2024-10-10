@@ -39,7 +39,7 @@
 
 <body>
     <div id="main">
-        <div class="card" v-for="movie in movies" :key="movie.id">
+        <div class="card" v-for="movie in movies" :key="movie.id" @click="viewMovie(movie)">
             <img :src="'https://www.themoviedb.org/t/p/w600_and_h900_bestv2/' + movie.poster_path" alt="movie poster">
             <h2>{{ movie.title }}</h2>
             <p><strong>Release Date:</strong></br> {{ movie.release_date }}</p>
@@ -71,15 +71,11 @@
                             console.log("Error: " + error)
                         })
                 },
-                viewMovie() {
-                    console.log(this.movie)
-                    if (this.movie) {
-                        this.isValid = ref(true);
-                        window.location.href = 'movie.html'
-                    } else {
-                        this.isValid = ref(false);
-                        alert('Película no encontrada');
-                    }
+                viewMovie(movie) {
+                    console.log(movie);
+                    const movieId = movie.id;
+
+                    window.location.href = window.location.href = `movie.html?id=${movieId}`
                 }
             },
             mounted() {

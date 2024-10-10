@@ -1,0 +1,1 @@
+{"version":3,"file":"cis-minus.js","sources":["../../../src/solid/cis-minus.ts"],"sourcesContent":["export var cisMinus = [\"512 512\", \"<rect width='368' height='64' x='72' y='224' fill='var(--ci-primary-color, currentColor)' class='ci-primary'/>\"];\n"],"names":[],"mappings":"AAAU,IAAC,QAAQ,GAAG,CAAC,SAAS,EAAE,gHAAgH;;;;"}

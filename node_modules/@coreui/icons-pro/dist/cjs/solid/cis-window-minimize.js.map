@@ -1,0 +1,1 @@
+{"version":3,"file":"cis-window-minimize.js","sources":["../../../src/solid/cis-window-minimize.ts"],"sourcesContent":["export var cisWindowMinimize = [\"512 512\", \"<rect width='480' height='64' x='16' y='432' fill='var(--ci-primary-color, currentColor)' class='ci-primary'/>\"];\n"],"names":[],"mappings":";;AAAU,IAAC,iBAAiB,GAAG,CAAC,SAAS,EAAE,gHAAgH;;;;"}
