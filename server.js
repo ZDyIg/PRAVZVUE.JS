@@ -13,7 +13,6 @@ const path = require("path");
 const serverApp = express();
 const PORT = process.env.PORT || 3000;
 
-// Servir archivos estáticos desde la carpeta 'public'
 serverApp.use(express.static(path.join(__dirname, "public")));
 
 serverApp.get("/", (req, res) => {
