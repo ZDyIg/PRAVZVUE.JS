@@ -6,9 +6,90 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <style type="text/css">
+        #main {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+            justify-content: center;
+            align-items: flex;
+            min-height: 100vh;
+            background-color: #708B75;
+        }
+
+        .card {
+            background-color: #A3B18A;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px #444b6e8a;
+            text-align: center;
+            margin: 10px;
+        }
+
+        img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            border-radius: 5px;
+
+        }
+    </style>
 </head>
 
+
 <body>
+    <div id="main">
+        <div class="card" v-for="movie in movies" :key="movie.id">
+            <img :src="'https://www.themoviedb.org/t/p/w600_and_h900_bestv2/' + movie.poster_path" alt="movie poster">
+            <h2>{{ movie.title }}</h2>
+            <p><strong>Release Date:</strong></br> {{ movie.release_date }}</p>
+            <p>{{ movie.overview }}</p>
+            <p><strong>Original Language:</strong> {{ movie.original_language }}</p>
+        </div>
+    </div>
+
+    </div>
+
+    <script>
+        const { createApp, ref } = Vue;
+        createApp({
+            data() {
+                return {
+                    movies: [],
+                    viewport: 'movies'
+                }
+            },
+            methods: {
+                getMovies() {
+                    fetch('https://api.themoviedb.org/3/discover/movie?api_key=e2f892788bdea42be5636a47bc7ffdd5')
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log(data)
+                            this.movies = data.results;
+                        })
+                        .catch(error => {
+                            console.log("Error: " + error)
+                        })
+                },
+                viewMovie() {
+                    console.log(this.movie)
+                    if (this.movie) {
+                        this.isValid = ref(true);
+                        window.location.href = 'movie.html'
+                    } else {
+                        this.isValid = ref(false);
+                        alert('Película no encontrada');
+                    }
+                }
+            },
+            mounted() {
+                console.log('App mounted')
+                this.getMovies();
+            }
+
+        }).mount('#main')
+    </script>
+
 
 </body>
 

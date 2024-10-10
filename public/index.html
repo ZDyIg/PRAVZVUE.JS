@@ -87,8 +87,8 @@
         createApp({
             data() {
                 return {
-                    email: '',
-                    password: '',
+                    email: 'admin@hotmail.com',
+                    password: 'admin',
                     isValid: ref(false)
                 }
             },
@@ -96,17 +96,13 @@
                 login() {
                     console.log(this.email)
                     console.log(this.password)
-                    // fetch('users.json')
-                    //     .then(response => response.json())
-                    //     .then(users => {
-                    //         this.users = users;
-                    //         users.forEach(user => {
-                    //             if (user.email === this.email && user.password === this.password) {
-                    //                 this.isValid = ref(true);
-                    //                 console.log(this.isValid)
-                    //             }
-                    //         })
-                    //     })
+                    if (this.email === 'admin@hotmail.com' && this.password === 'admin') {
+                        this.isValid = ref(true);
+                        window.location.href = 'movies.html'
+                    } else {
+                        this.isValid = ref(false);
+                        alert('Usuario o contraseña incorrectos');
+                    }
                 }
             }
         }).mount('#main')
