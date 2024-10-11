@@ -137,7 +137,7 @@
                 <p><strong>Vote Count:</strong> {{ movie.vote_count }}</p>
 
                 <p><strong>Rate this movie:</strong></p>
-                <input type="range" v-model="rating" min="0" max="10" step="0.1" />
+                <input type="range" v-model="rating" min="0" max="10" step="0.5" />
                 <p>Rating: {{ rating }}</p>
 
                 <div class="button-container">
@@ -191,7 +191,26 @@
                 },
 
                 saveRating() {
-                    localStorage.setItem(`rating_${this.movieId}`, this.rating);
+                    console.log('Saving rating:', this.rating);
+                    // localStorage.setItem(`rating_${this.movieId}`, this.rating);
+                    const myHeaders = new Headers();
+                    myHeaders.append("Content-Type", "application/json");
+
+                    const raw = JSON.stringify({
+                        "value": this.rating
+                    });
+
+                    const requestOptions = {
+                        method: "POST",
+                        headers: myHeaders,
+                        body: raw,
+                        redirect: "follow"
+                    };
+
+                    fetch(`https://api.themoviedb.org/3/movie/${this.movieId}/rating?session_id=${localStorage.getItem('session_id')}&api_key=e2f892788bdea42be5636a47bc7ffdd5`, requestOptions)
+                        .then((response) => response.text())
+                        .then((result) => console.log(result))
+                        .catch((error) => console.error(error));
                 },
 
                 loadRating() {

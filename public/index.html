@@ -100,30 +100,59 @@
                         username: this.username,
                         password: this.password
                     };
+                    const requestOptions = {
+                        method: "GET",
+                        redirect: "follow"
+                    };
 
-                    try {
-                        const response = await fetch('https://api.themoviedb.org/3/authentication/token/validate_with_login?api_key=' + this.apiKey, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'Authorization': 'Bearer ' + this.token
-                            },
-                            body: JSON.stringify(loaded)
-                        });
+                    fetch("https://api.themoviedb.org/3/authentication/token/new?api_key=e2f892788bdea42be5636a47bc7ffdd5", requestOptions)
+                        .then((response) => response.json())
+                        .then((result) => {
+                            const myHeaders = new Headers();
+                            myHeaders.append("Content-Type", "application/json");
 
-                        if (!response.ok) {
-                            const data = await response.json();
-                            this.isValid = true;
-                            window.location.href = 'movies.html';
-                        } else {
-                            this.isValid = false;
-                            alert('Error: ' + response.status + ' ' + response.statusText);
-                        }
-                    } catch (error) {
-                        console.log(error);
-                        alert('Error: ' + error);
+                            const raw = JSON.stringify({
+                                username: this.username,
+                                password: this.password,
+                                "request_token": result.request_token
+                            });
 
-                    }
+                            const requestOptions = {
+                                method: "POST",
+                                headers: myHeaders,
+                                body: raw,
+                                redirect: "follow"
+                            };
+
+                            fetch("https://api.themoviedb.org/3/authentication/token/validate_with_login?api_key=e2f892788bdea42be5636a47bc7ffdd5", requestOptions)
+                                .then((response) => response.json())
+                                .then((result) => {
+                                    const myHeaders = new Headers();
+                                    myHeaders.append("Content-Type", "application/json");
+
+                                    const raw = JSON.stringify({
+                                        "request_token": result.request_token
+                                    });
+
+                                    const requestOptions = {
+                                        method: "POST",
+                                        headers: myHeaders,
+                                        body: raw,
+                                        redirect: "follow"
+                                    };
+
+                                    fetch("https://api.themoviedb.org/3/authentication/session/new?api_key=e2f892788bdea42be5636a47bc7ffdd5", requestOptions)
+                                        .then((response) => response.json())
+                                        .then((result) => {
+                                            localStorage.setItem("session_id", result.session_id);
+                                            this.isValid = true
+                                            window.location.href = "movies.html";
+                                        })
+                                        .catch((error) => console.error(error));
+                                })
+                                .catch((error) => console.error(error));
+                        })
+                        .catch((error) => console.error(error));
                 }
             }
         }).mount('#main')
