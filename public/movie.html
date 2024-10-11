@@ -191,6 +191,7 @@
                 },
 
                 saveRating() {
+                    console.log('Session ID:', localStorage.getItem('session_id'));
                     console.log('Saving rating:', this.rating);
                     // localStorage.setItem(`rating_${this.movieId}`, this.rating);
                     const myHeaders = new Headers();
@@ -223,16 +224,58 @@
 
 
                 deleteRating() {
-                    if (this.movieId) {
-                        localStorage.removeItem(`rating_${this.movieId}`);
-                        this.rating = 0;
-                        console.log('Rating deleted');
+                    // // if (this.movieId) {
+                    // //     localStorage.removeItem(`rating_${this.movieId}`);
+                    // //     this.rating = 0;
+                    // //     console.log('Rating deleted');
+                    // // }
+
+                    // const requestOptions = {
+                    //     method: "DELETE",
+                    //     redirect: "follow"
+                    // };
+
+                    // fetch(`https://api.themoviedb.org/3/movie/${this.movieId}/rating?sessionId={{sessionID}}`, requestOptions)
+                    //     .then((response) => response.text())
+                    //     .then((result) => console.log(result))
+                    //     .catch((error) => console.error(error));
+
+
+                    // Obtener session_id desde localStorage
+                    const sessionId = localStorage.getItem('session_id');
+                    if (!sessionId) {
+                        console.error("No session ID found. Please log in.");
+                        return;
                     }
+
+                    const requestOptions = {
+                        method: "DELETE",
+                        redirect: "follow"
+                    };
+
+                    fetch(`https://api.themoviedb.org/3/movie/${this.movieId}/rating?session_id=${sessionId}&api_key=e2f892788bdea42be5636a47bc7ffdd5`, requestOptions)
+                        .then((response) => {
+                            if (!response.ok) {
+                                throw new Error('Error deleting the rating');
+                            }
+                            return response.text();
+                        })
+                        .then((result) => {
+                            if (this.movieId) {
+                                localStorage.removeItem(`rating_${this.movieId}`);
+                                this.rating = 0;
+                                console.log('Rating deleted');
+                            }
+                            console.log(result);
+                        })
+                        .catch((error) => {
+                            console.error('Error:', error);
+                        });
+
+
                 }
+
             },
-
-
-
             mounted() {
                 this.movieId = this.getMovieIdFromUrl();
                 console.log('Movie ID from URL:', this.movieId);
